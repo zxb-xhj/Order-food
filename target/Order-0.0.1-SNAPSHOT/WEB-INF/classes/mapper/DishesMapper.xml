@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhj.dao.DishesMapper">
+  <resultMap id="BaseResultMap" type="com.xhj.bean.Dishes">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="dnumber" jdbcType="INTEGER" property="number" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="vid" jdbcType="INTEGER" property="vid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, dname, dnumber, price, vid
+  </sql>
+  <select id="selectByExample" parameterType="com.xhj.bean.DishesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dishes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dishes
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dishes
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xhj.bean.DishesExample">
+    delete from dishes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xhj.bean.Dishes">
+    insert into dishes (id, dname, dnumber,
+      price, vid)
+    values (#{id,jdbcType=INTEGER}, #{dname,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{price,jdbcType=VARCHAR}, #{vid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xhj.bean.Dishes">
+    insert into dishes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="dnumber != null">
+        dnumber,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="vid != null">
+        vid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dnumber != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="vid != null">
+        #{vid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xhj.bean.DishesExample" resultType="java.lang.Long">
+    select count(*) from dishes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dishes
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.dname != null">
+        dname = #{record.dname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null">
+        dnumber = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vid != null">
+        vid = #{record.vid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dishes
+    set id = #{record.id,jdbcType=INTEGER},
+      dname = #{record.dname,jdbcType=VARCHAR},
+      dnumber = #{record.number,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=VARCHAR},
+      vid = #{record.vid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xhj.bean.Dishes">
+    update dishes
+    <set>
+      <if test="dname != null">
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        dnumber = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="vid != null">
+        vid = #{vid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xhj.bean.Dishes">
+    update dishes
+    set dname = #{dname,jdbcType=VARCHAR},
+      dnumber = #{number,jdbcType=INTEGER},
+      price = #{price,jdbcType=VARCHAR},
+      vid = #{vid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="mohu" resultType="com.xhj.bean.Dishes">
+      SELECT * FROM dishes WHERE dname LIKE '%' || #{name} || '%'
+  </select>
+  
+  <select id="signature" resultType="com.xhj.bean.Dishes">
+      SELECT d.* FROM dishes d JOIN varieties v ON d.`vid`=v.`id` WHERE d.`vid`=#{id}
+  </select>
+
+  <select id="selectvid" resultMap="BaseResultMap">
+      select * from dishes where vid=#{id}
+  </select>
+  
+  <update id="updateid" parameterType="com.xhj.bean.Dishes">
+      UPDATE dishes SET dnumber=#{number} WHERE id=#{id}
+  </update>
+  
+  <update id="updateall" parameterType="com.xhj.bean.Dishes">
+      UPDATE dishes SET dnumber=0
+  </update>
+  
+  <select id="seledname" resultMap="BaseResultMap">
+      SELECT * FROM dishes where dname=#{dname}
+  </select>
+  
+  <delete id="deletedsid" parameterType="com.xhj.bean.Dishes">
+      delete from dishes where id=#{id}
+  </delete>
+  
+  <insert id="insertds" parameterType="com.xhj.bean.Dishes">
+      insert into dishes(dname,dnumber,price,vid,id) values(#{dname},0,#{price},#{vid},dishes_sequence.nextval)
+  </insert>
+  
+  <update id="updateds" parameterType="com.xhj.bean.Dishes">
+      UPDATE dishes SET dname=#{dname},price=#{price},vid=#{vid} WHERE id=#{id}
+  </update>
+  
+  <delete id="deletevid" parameterType="java.lang.Integer">
+      delete from dishes where vid=#{vid}
+  </delete>
+  <select id="selectall" resultMap="BaseResultMap">
+    select * from dishes
+  </select>
+  <select id="selectid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from dishes where id=#{id}
+  </select>
+</mapper>

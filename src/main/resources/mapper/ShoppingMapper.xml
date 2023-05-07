@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhj.dao.ShoppingMapper">
+  <resultMap id="BaseResultMap" type="com.xhj.bean.Shopping">
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="snumber" jdbcType="INTEGER" property="number" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="taste" jdbcType="VARCHAR" property="taste" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    dname, snumber, price, taste
+  </sql>
+  <select id="selectByExample" parameterType="com.xhj.bean.ShoppingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.xhj.bean.ShoppingExample">
+    delete from shopping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xhj.bean.Shopping">
+    insert into shopping (dname, snumber, price,
+      taste)
+    values (#{dname,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=VARCHAR}, 
+      #{taste,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xhj.bean.Shopping">
+    insert into shopping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="number != null">
+        snumber,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="taste != null">
+        taste,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="taste != null">
+        #{taste,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xhj.bean.ShoppingExample" resultType="java.lang.Long">
+    select count(*) from shopping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping
+    <set>
+      <if test="record.dname != null">
+        dname = #{record.dname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null">
+        snumber = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taste != null">
+        taste = #{record.taste,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping
+    set dname = #{record.dname,jdbcType=VARCHAR},
+      snumber = #{record.number,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=VARCHAR},
+      taste = #{record.taste,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="gowu" resultMap="BaseResultMap">
+      SELECT * FROM shopping
+  </select>
+  
+  <select id="gowu1" resultType="java.lang.String">
+      SELECT COUNT(*) FROM shopping WHERE dname=#{name}
+  </select>
+  
+  <select id="price" resultType="java.lang.String">
+      SELECT SUM(price*snumber) prices FROM shopping
+  </select>
+  
+  <delete id="deleteid" parameterType="java.lang.Integer">
+      DELETE FROM shopping WHERE id=#{id}
+  </delete>
+  
+  <insert id="insert1" parameterType="com.xhj.bean.Shopping">
+      INSERT INTO shopping VALUES(#{dname},#{number},#{price},#{taste},shopping_sequence.nextval)
+  </insert>
+  
+  <update id="updateid" parameterType="com.xhj.bean.Shopping">
+      UPDATE shopping SET snumber=#{number} WHERE id=#{id}
+  </update>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+      SELECT * FROM shopping where id=#{id}
+  </select>
+  
+  <delete id="deleteall" parameterType="com.xhj.bean.Shopping">
+	  DELETE FROM shopping
+  </delete>
+  
+  <delete id="deletelist" parameterType="java.util.List">
+      DELETE FROM shopping WHERE id IN(#{list})
+  </delete>
+ 
+</mapper>

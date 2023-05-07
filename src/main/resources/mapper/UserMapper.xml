@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhj.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.xhj.bean.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+        <result column="balance" jdbcType="INTEGER" property="balance" />
+    </resultMap>
+
+    <select id="selectid" resultType="com.xhj.bean.User" parameterType="java.lang.Integer">
+        select * from "USER" where id=#{id}
+    </select>
+
+    <update id="updatebalance" parameterType="com.xhj.bean.User">
+        update "USER" set balance = balance + #{balance} where id=#{id}
+    </update>
+
+    <update id="jianbalance" parameterType="com.xhj.bean.User">
+        update "USER" set balance = balance - #{balance} where id=#{id}
+    </update>
+
+    <select id="selectuser" resultType="com.xhj.bean.User">
+        select * from "USER"
+    </select>
+
+    <select id="selectusername" resultType="java.lang.String">
+        select name from "USER" where name =#{name}
+    </select>
+
+    <select id="selectuserid" resultType="com.xhj.bean.User">
+        select * from "USER" where id =#{id}
+    </select>
+
+    <select id="selectbalance" resultType="com.xhj.bean.User" parameterType="com.xhj.bean.User">
+        select * from "USER" where balance >= #{balance} and id=#{id}
+    </select>
+
+    <select id="selectpwd" resultType="java.lang.String">
+        select pwd from "USER" where id=#{id}
+    </select>
+
+    <insert id="insertuser" parameterType="com.xhj.bean.User">
+        insert into "USER" values(user_sqe.nextval,#{name},#{pwd},0)
+    </insert>
+
+    <update id="updateuser" parameterType="com.xhj.bean.User">
+        update "USER" set name=#{name} , pwd=#{pwd} , balance=#{balance} where id=#{id}
+    </update>
+
+    <update id="updatepwd" parameterType="com.xhj.bean.User">
+        update "USER" set pwd=#{pwd} where id=#{id}
+    </update>
+
+    <delete id="deleteid" parameterType="java.lang.Integer">
+        delete from "USER" where id=#{id}
+    </delete>
+
+</mapper>

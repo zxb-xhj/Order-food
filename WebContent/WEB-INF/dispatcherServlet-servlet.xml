@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+		<!-- spring的配置文件，这里主要跳转网站配置和业务逻辑有关 -->
+	<context:component-scan base-package="com.xhj" use-default-filters="false">
+	<!-- 只扫描控制器 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- 配置html视图解析器 -->
+	<!-- html视图解析器 必须先配置freemarkerConfig,注意html是没有prefix前缀属性的-->
+	<bean id="freemarkerConfig"
+		  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath">
+			<value>/WEB-INF/views/html/</value>
+		</property>
+	</bean>
+	<bean id="htmlviewResolver"
+		  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".html" />
+		<property name="order" value="0"></property>
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
+	</bean>
+
+	<!-- jsp视图解析器 -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /> -->
+		<!-- 如果配置的有html视图解析器，不能用jstl的那个 -->
+		<property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
+		<property name="prefix" value="/WEB-INF/views/"/>   <!-- jsp前缀 -->
+		<property name="suffix" value=".jsp" />		<!-- jsp后缀 -->
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="order" value="0" />		<!-- 配置优先等级，越小优先级越高 -->
+	</bean>
+	
+	<!-- 两个标准配置 -->
+	<!-- 将springmvc不能处理的请求交给tomcat,扫描静态资源 -->
+	<mvc:default-servlet-handler/>
+	<!-- 能支持springmvc更高级的功能，扫描动态资源 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize">
+            <value>5242880</value>
+        </property>
+    </bean>
+
+</beans>
