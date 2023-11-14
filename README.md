@@ -1,6 +1,8 @@
 # Order-food
 小火计点餐系统
+
 细节：里面的log图片是一位我非常重要非常爱的人为我设计的
+
 基于Spring-SpringMVC-MyBatiis jQuery-JavaScript-Ajax+Oracle
 
 首页
